@@ -14,6 +14,7 @@ export default function BarInput({
   valueName,
   maxName,
   animateOnlyWhenRootActive = false,
+  isGM = true, // <-- НОВОЕ: передаём isGM
 }: {
   parentValue: number;
   parentMax: number;
@@ -23,6 +24,7 @@ export default function BarInput({
   valueName: InputName;
   maxName: InputName;
   animateOnlyWhenRootActive?: boolean;
+  isGM?: boolean; // <-- НОВОЕ: если false, игроки видят только текст
 }): JSX.Element {
   const [valueHasFocus, setValueHasFocus] = useState(false);
   const [maxHasFocus, setMaxHasFocus] = useState(false);
@@ -56,22 +58,33 @@ export default function BarInput({
             ></div>
           )}
         </div>
+        
+        {/* ТЕКУЩИЙ ХП */}
         <StatToolTip
           open={valueHasFocus && parentValue !== 0}
           text={parentValue.toString()}
           color={color}
         >
-          <PartiallyControlledInput
-            parentValue={parentValue.toString()}
-            name={valueName}
-            onUserConfirm={valueUpdateHandler}
-            onFocus={() => setValueHasFocus(true)}
-            onBlur={() => setValueHasFocus(false)}
-            className={cn(
-              "size-[44px] rounded-xl bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark",
-            )}
-          />
+          {isGM ? (
+            <PartiallyControlledInput
+              parentValue={parentValue.toString()}
+              name={valueName}
+              onUserConfirm={valueUpdateHandler}
+              onFocus={() => setValueHasFocus(true)}
+              onBlur={() => setValueHasFocus(false)}
+              className={cn(
+                "size-[44px] rounded-xl bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark",
+              )}
+            />
+          ) : (
+            <span
+              className="size-[44px] rounded-xl bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark flex items-center justify-center cursor-default"
+            >
+              {parentValue}
+            </span>
+          )}
         </StatToolTip>
+        
         <div
           className={cn(
             "flex h-full items-center justify-center pt-[2px] text-text-primary dark:text-text-primary-dark",
@@ -79,65 +92,37 @@ export default function BarInput({
         >
           /
         </div>
+        
+        {/* МАКСИМАЛЬНЫЙ ХП */}
         <StatToolTip
           open={maxHasFocus && parentMax !== 0}
           text={parentMax.toString()}
           color={color}
         >
-          <PartiallyControlledInput
-            parentValue={parentMax.toString()}
-            name={maxName}
-            onUserConfirm={maxUpdateHandler}
-            onFocus={() => setMaxHasFocus(true)}
-            onBlur={() => setMaxHasFocus(false)}
-            className={cn(
-              "size-[44px] rounded-xl bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark",
-            )}
-          />
+          {isGM ? (
+            <PartiallyControlledInput
+              parentValue={parentMax.toString()}
+              name={maxName}
+              onUserConfirm={maxUpdateHandler}
+              onFocus={() => setMaxHasFocus(true)}
+              onBlur={() => setMaxHasFocus(false)}
+              className={cn(
+                "size-[44px] rounded-xl bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark",
+              )}
+            />
+          ) : (
+            <span
+              className="size-[44px] rounded-xl bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark flex items-center justify-center cursor-default"
+            >
+              {parentMax}
+            </span>
+          )}
         </StatToolTip>
       </div>
     </div>
   );
 }
 
-function LeftCutoutBackground() {
-  return (
-    <svg>
-      <path
-        d="
-          M 44 22
-          l 0 -10 
-          a 12 12 -90 0 0 -12 -12
-          l 56 0
-          a 12 12 90 0 1 12 12
-          l 0 20
-          a 12 12 90 0 1 -12 12
-          l -56 0
-          a 12 12 -90 0 0 12 -12
-          l 0 -10
-        "
-      />
-    </svg>
-  );
-}
-
-function RightCutoutBackground() {
-  return (
-    <svg>
-      <path
-        d="
-          M 56 22
-          l 0 -10 
-          a 12 12 -90 0 1 12 -12
-          l -56 0
-          a 12 12 90 0 0 -12 12
-          l 0 20
-          a 12 12 90 0 0 12 12
-          l 56 0
-          a 12 12 -90 0 1 -12 -12
-          l 0 -10
-        "
-      />
-    </svg>
-  );
-}
+// Оставь эти функции как есть
+function LeftCutoutBackground() { /* ... */ }
+function RightCutoutBackground() { /* ... */ }
