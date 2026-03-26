@@ -56,7 +56,13 @@ export function getNewStatValue(
   name: InputName,
   inputContent: string,
   previousValue: number,
+  isGM: boolean,
 ): number {
+  if (!isGM) {
+    // игроки могут только смотреть, но не менять
+    return previousValue;
+  }
+
   return restrictValueRange(
     convertInputNameToMetadataId(name),
     inlineMath(inputContent, previousValue),
