@@ -1,9 +1,9 @@
 import { InputName } from "@/statInputHelpers";
 import PartiallyControlledInput from "./StatInput";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { InputColor } from "@/colorHelpers";
 import StatToolTip from "./StatToolTip";
+import { useState } from "react";
 
 export default function BubbleInput({
   parentValue,
@@ -11,12 +11,14 @@ export default function BubbleInput({
   updateHandler,
   name,
   animateOnlyWhenRootActive = false,
+  isGM = true, // <-- добавь это поле или передавай извне
 }: {
   parentValue: number;
   color: InputColor;
   updateHandler: (target: HTMLInputElement) => void;
   name: InputName;
   animateOnlyWhenRootActive?: boolean;
+  isGM?: boolean; // если ГМ, можно редактировать; если нет — только просмотр
 }): JSX.Element {
   const [hasFocus, setHasFocus] = useState(false);
 
@@ -48,14 +50,22 @@ export default function BubbleInput({
           text={parentValue.toString()}
           color={color}
         >
-          <PartiallyControlledInput
-            name={name}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
-            parentValue={parentValue.toString()}
-            onUserConfirm={updateHandler}
-            className={`${animationDuration100} size-[44px] rounded-full bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark`}
-          />
+          {isGM ? (
+            <PartiallyControlledInput
+              name={name}
+              onFocus={() => setHasFocus(true)}
+              onBlur={() => setHasFocus(false)}
+              parentValue={parentValue.toString()}
+              onUserConfirm={updateHandler}
+              className={`${animationDuration100} size-[44px] rounded-full bg-transparent text-center font-normal text-text-primary outline-none dark:text-text-primary-dark`}
+            />
+          ) : (
+            <span
+              className={`${animationDuration100} size-[44px] rounded-full bg-transparent text-center font-normal text-text-primary dark:text-text-primary-dark flex items-center justify-center`}
+            >
+              {parentValue}
+            </span>
+          )}
         </StatToolTip>
       </div>
     </div>
