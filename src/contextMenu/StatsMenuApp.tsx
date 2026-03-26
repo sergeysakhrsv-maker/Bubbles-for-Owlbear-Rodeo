@@ -159,6 +159,7 @@ export default function StatsMenuApp({
           valueName="health"
           maxName="maxHealth"
           animateOnlyWhenRootActive={true}
+          isGM={role === "GM"}
         ></BarInput>
         <h2 className="col-span-2 flex justify-center self-start text-2xs font-medium tracking-wider text-text-secondary dark:text-text-secondary-dark">
           & MAXIMUM
@@ -181,6 +182,7 @@ export default function StatsMenuApp({
           updateHandler={(target) => handleStatUpdate(target, token.tempHealth)}
           name="tempHealth"
           animateOnlyWhenRootActive={true}
+          isGM={role === "GM"}
         />
       </div>
 
@@ -196,6 +198,7 @@ export default function StatsMenuApp({
           updateHandler={(target) => handleStatUpdate(target, token.armorClass)}
           name={"armorClass"}
           animateOnlyWhenRootActive={true}
+          isGM={role === "GM"}
         />
       </div>
     </div>
