@@ -56,7 +56,14 @@ export function getNewStatValue(
   name: InputName,
   inputContent: string,
   previousValue: number,
+  isGM: boolean,  // ← НОВЫЙ параметр
 ): number {
+  if (!isGM) {
+    // Игроки НЕ МОГУТ менять статы — возвращаем старое значение
+    return previousValue;
+  }
+
+  // ГМ может использовать мат: +6, -6 и т.д.
   return restrictValueRange(
     convertInputNameToMetadataId(name),
     inlineMath(inputContent, previousValue),
