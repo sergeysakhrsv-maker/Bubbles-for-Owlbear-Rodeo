@@ -56,17 +56,18 @@ export default function StatsMenuApp({
       }),
     [],
   );
-
+  
   function handleStatUpdate(target: HTMLInputElement, previousValue: number) {
-    const name = target.name;
-    if (!isInputName(name)) throw "Error: invalid input name.";
+  const name = target.name;
+  if (!isInputName(name)) throw "Error: invalid input name.";
 
-    const value = getNewStatValue(name, target.value, previousValue);
+  const isGM = role === "GM";  // ← НОВОЕ: используем prop role
+  const value = getNewStatValue(name, target.value, previousValue, isGM);  // ← + isGM
 
-    setToken((prev) => ({ ...prev, [name]: value }) as Token);
-    writeTokenValueToItem(token.item.id, name, value);
-  }
-
+  setToken((prev) => ({ ...prev, [name]: value }) as Token);
+  writeTokenValueToItem(token.item.id, name, value);
+}
+  
   function toggleHide() {
     const name: InputName = "hideStats";
     if (!isInputName(name)) throw "Error: invalid input name.";
